@@ -1,7 +1,6 @@
 #include <vector>
 
 #include "outliers.h"
-#include "ply.h"
 #include "proposal.h"
 #include "region.h"
 #include "svd.h"
