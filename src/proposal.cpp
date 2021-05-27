@@ -18,6 +18,7 @@ std::vector<Point> proposal::grow(SVD& svd, std::vector<Point>& points)
     Eigen::MatrixXf z = svd.m_usv.matrixU().col(2);
 
     // determine region of interest
+    // todo: optimize:
     std::vector<Point> roi;
     Eigen::Vector3d vec;
     Eigen::Vector3d svdUNormal;
@@ -25,7 +26,8 @@ std::vector<Point> proposal::grow(SVD& svd, std::vector<Point>& points)
 
     int index = 0;
     for (const auto& point : points) {
-         vec = Eigen::Vector3d(svd.m_vectors(index, C0), svd.m_vectors(index, C1), svd.m_vectors(index, C2));
+        vec = Eigen::Vector3d(svd.m_vectors(index, C0),
+            svd.m_vectors(index, C1), svd.m_vectors(index, C2));
         svdUNormal = Eigen::Vector3d(x(index, C0), y(index, C0), z(index, C0));
 
         if (std::abs(svdV3Normal.dot(vec)) < V3_ARGMIN) {
@@ -39,6 +41,7 @@ std::vector<Point> proposal::grow(SVD& svd, std::vector<Point>& points)
     }
 
     // clean coarse segment
+    // todo optimize:
     const int16_t CLEAN = 100;
     Point centroid = Point::centroid(roi);
     std::vector<Point> segment;
