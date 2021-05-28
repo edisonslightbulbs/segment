@@ -51,5 +51,4 @@ int main(int argc, char* argv[]){
 
 * a flexible `point.h` header [here](https://github.com/edisonslightbulbs/point).
 * the [`outliers`](https://github.com/edisonslightbulbs/outliers)  submodule dependency
-* the [`proposal`](https://github.com/edisonslightbulbs/proposal)  submodule dependency
 * the [`svd`](https://github.com/edisonslightbulbs/svd)  submodule dependency
