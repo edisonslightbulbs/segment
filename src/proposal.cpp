@@ -18,37 +18,45 @@ std::vector<Point> proposal::grow(SVD& svd, std::vector<Point>& points)
     Eigen::MatrixXf z = svd.m_usv.matrixU().col(2);
 
     // determine region of interest
-    // todo: optimize:
-    std::vector<Point> roi;
+    std::vector<Point> roi(points.size());
     Eigen::Vector3d vec;
     Eigen::Vector3d svdUNormal;
     Eigen::Vector3d svdV3Normal = svd.getV3Normal();
 
     int index = 0;
-    for (const auto& point : points) {
-        vec = Eigen::Vector3d(svd.m_vectors(index, C0),
-            svd.m_vectors(index, C1), svd.m_vectors(index, C2));
-        svdUNormal = Eigen::Vector3d(x(index, C0), y(index, C0), z(index, C0));
+    for (int i = 0; i < points.size(); i++) {
+        vec = Eigen::Vector3d(
+            svd.m_vectors(i, C0), svd.m_vectors(i, C1), svd.m_vectors(i, C2));
 
         if (std::abs(svdV3Normal.dot(vec)) < V3_ARGMIN) {
+
+            svdUNormal = Eigen::Vector3d(x(i, C0), y(i, C0), z(i, C0));
+
             if (svdUNormal.dot(vec) < U_ARGMIN) {
-                if (edge::detect(z(index, C0))) {
-                    roi.push_back(point);
+                if (edge::detect(z(i, C0))) {
+                    roi[index] = points[i];
+                    index++;
                 }
             }
         }
-        index++;
     }
+    std::vector<Point> optimizedRoi(roi.begin(), roi.begin() + index);
 
     // clean coarse segment
-    // todo optimize:
     const int16_t CLEAN = 100;
-    Point centroid = Point::centroid(roi);
-    std::vector<Point> segment;
-    for (auto& point : roi) {
-        if (point.m_xyz[2] < centroid.m_xyz[2] + CLEAN) {
-            segment.push_back(point);
+    Point centroid = Point::centroid(optimizedRoi);
+
+    std::vector<Point> segment(optimizedRoi.size());
+
+    index = 0;
+    for (int i = 0; i < optimizedRoi.size(); i++) { /*NOLINT*/
+        if (optimizedRoi[i].m_xyz[2] < centroid.m_xyz[2] + CLEAN) {
+            segment[index] = optimizedRoi[i];
+            index++;
         }
     }
-    return segment;
+    std::vector<Point> optimizedSegment(
+        segment.begin(), segment.begin() + index);
+
+    return optimizedSegment;
 }
