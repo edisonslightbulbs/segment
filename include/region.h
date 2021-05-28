@@ -6,15 +6,16 @@
 
 namespace region {
 
-/**
- * segment
- *   Segments context.
+/** segment
+ *   Segments a 3D point cloud and extracts an
+ *   orthogonal planar surface.
  *
  * @param points
- *   Points to segment.
+ *   The given set of 3D points
  *
  * @retval
- *   Segmented points.
+ *   Set of 3D points corresponding to the
+ *   orthogonal planar surface
  */
 std::vector<Point> segment(std::vector<Point>& points);
 
