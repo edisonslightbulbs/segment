@@ -1,7 +1,7 @@
 #include <vector>
 
 #include "outliers.h"
-#include "pcl.h"
+#include "i3dpcl.h"
 #include "proposal.h"
 #include "region.h"
 #include "svd.h"
