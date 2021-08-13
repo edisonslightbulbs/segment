@@ -1,7 +1,7 @@
-#include <ply.h>
 #include <vector>
 
 #include "outliers.h"
+#include "pcl.h"
 #include "proposal.h"
 #include "region.h"
 #include "svd.h"
